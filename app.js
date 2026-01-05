@@ -15,14 +15,14 @@ const state = {
     lineIdCounter: 0
 };
 
-// Muted Swiss Palette for Segments
+// 分割段配色 - 更新为新的玻璃风格配色
 const colors = [
-    'rgba(100, 149, 237, 0.2)', // Cornflower Blue
-    'rgba(50, 205, 50, 0.2)',   // Lime Green
-    'rgba(255, 105, 180, 0.2)', // Hot Pink
-    'rgba(255, 165, 0, 0.2)',   // Orange
-    'rgba(147, 112, 219, 0.2)', // Medium Purple
-    'rgba(64, 224, 208, 0.2)',  // Turquoise
+    'rgba(90, 200, 250, 0.2)',   // Blue Light
+    'rgba(0, 122, 255, 0.2)',    // Blue
+    'rgba(52, 199, 89, 0.2)',    // Green
+    'rgba(255, 149, 0, 0.2)',    // Orange
+    'rgba(175, 82, 222, 0.2)',   // Purple
+    'rgba(255, 59, 48, 0.2)',    // Red
 ];
 
 // DOM 元素
@@ -44,6 +44,32 @@ const elements = {
 // 初始化
 function init() {
     setupEventListeners();
+    setupMouseTracking();
+}
+
+// 设置鼠标跟踪发光效果
+function setupMouseTracking() {
+    document.addEventListener('mousemove', (e) => {
+        // 更新全局背景发光
+        const mouseGlow = document.querySelector('.mouse-glow');
+        if (mouseGlow) {
+            mouseGlow.style.setProperty('--mouse-x', `${e.clientX}px`);
+            mouseGlow.style.setProperty('--mouse-y', `${e.clientY}px`);
+        }
+
+        // 更新所有玻璃元素的发光效果
+        const glassElements = document.querySelectorAll(
+            '.glass-card, .upload-card, .toolbar, .preview-panel, .segments-panel, .btn, .segment-card'
+        );
+
+        glassElements.forEach(element => {
+            const rect = element.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            element.style.setProperty('--mouse-x', `${x}px`);
+            element.style.setProperty('--mouse-y', `${y}px`);
+        });
+    });
 }
 
 // 设置事件监听器
