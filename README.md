@@ -2,6 +2,8 @@
 
 将单页长PDF垂直切分成多页，输出为一个PDF文件。
 
+# 在线使用  
+[点击此处](https://qqqqqf-q.github.io/PDF-Splitter/)
 ## 功能
 
 - 上传单页PDF，将其垂直切分成多个部分
