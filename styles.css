@@ -668,6 +668,13 @@ body {
     min-height: 600px;
 }
 
+/* Canvas Wrapper - 关键：让canvas和分割线容器同步缩放 */
+.canvas-wrapper {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+}
+
 #pdfCanvas {
     box-shadow: 0 32px 64px rgba(0, 0, 0, 0.5),
                 0 0 0 1px rgba(255, 255, 255, 0.05);
@@ -677,16 +684,20 @@ body {
     display: block;
 }
 
+/* 分割线容器现在相对于canvas-wrapper定位 */
+.canvas-wrapper .split-lines-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
 /* ========================================
    Split Lines
    ======================================== */
-.split-lines-container {
-    position: absolute;
-    top: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    pointer-events: none;
-}
+/* 旧的分割线容器样式已移至 .canvas-wrapper .split-lines-container */
 
 .split-line {
     position: absolute;

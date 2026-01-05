@@ -177,9 +177,7 @@ async function renderPDF() {
         viewport: viewport
     }).promise;
 
-    // 更新分割线容器尺寸
-    elements.splitLinesContainer.style.width = canvas.width + 'px';
-    elements.splitLinesContainer.style.height = canvas.height + 'px';
+    // 分割线容器现在通过CSS 100%宽高自动适配，无需手动设置尺寸
 }
 
 // 应用预设分割
@@ -226,8 +224,8 @@ function renderSplitLine(id, position) {
     line.id = `line-${id}`;
     line.dataset.lineId = id;
 
-    const y = position * state.canvasHeight;
-    line.style.top = y + 'px';
+    // 使用百分比定位，这样无论canvas如何缩放，分割线都能正确对齐
+    line.style.top = (position * 100) + '%';
 
     // 标签
     const handle = document.createElement('div');
@@ -257,13 +255,15 @@ function renderSplitLine(id, position) {
 function setupLineDrag(lineElement, id) {
     let isDragging = false;
     let startY = 0;
-    let startTop = 0;
+    let startPosition = 0;
 
     lineElement.addEventListener('mousedown', (e) => {
         if (e.target.closest('.delete-line')) return;
         isDragging = true;
         startY = e.clientY;
-        startTop = parseInt(lineElement.style.top);
+        // 获取当前位置比例
+        const lineData = state.splitLines.find(l => l.id === id);
+        startPosition = lineData ? lineData.position : 0;
         document.body.style.cursor = 'ns-resize';
         e.preventDefault();
     });
@@ -271,16 +271,22 @@ function setupLineDrag(lineElement, id) {
     document.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
 
+        // 获取容器的实际显示高度
+        const containerRect = elements.splitLinesContainer.getBoundingClientRect();
+        const containerHeight = containerRect.height;
+
         const deltaY = e.clientY - startY;
-        let newTop = startTop + deltaY;
+        // 将像素差值转换为比例差值
+        const deltaPosition = deltaY / containerHeight;
+        let newPosition = startPosition + deltaPosition;
 
         // 限制范围
-        newTop = Math.max(state.canvasHeight * 0.02, Math.min(newTop, state.canvasHeight * 0.98));
+        newPosition = Math.max(0.02, Math.min(newPosition, 0.98));
 
-        lineElement.style.top = newTop + 'px';
+        // 更新位置（使用百分比）
+        lineElement.style.top = (newPosition * 100) + '%';
 
-        // 更新位置
-        const newPosition = newTop / state.canvasHeight;
+        // 更新状态
         const lineData = state.splitLines.find(l => l.id === id);
         if (lineData) {
             lineData.position = newPosition;
@@ -382,11 +388,9 @@ function renderSegmentHighlights() {
         highlight.className = 'segment-highlight';
         highlight.dataset.id = segment.id;
 
-        const top = segment.startRatio * state.canvasHeight;
-        const height = (segment.endRatio - segment.startRatio) * state.canvasHeight;
-
-        highlight.style.top = top + 'px';
-        highlight.style.height = height + 'px';
+        // 使用百分比定位
+        highlight.style.top = (segment.startRatio * 100) + '%';
+        highlight.style.height = ((segment.endRatio - segment.startRatio) * 100) + '%';
         highlight.style.backgroundColor = segment.color;
 
         const label = document.createElement('div');
@@ -416,21 +420,26 @@ async function splitAndDownload() {
         const srcDoc = await PDFDocument.load(state.pdfBytes);
 
         // 获取原始页面尺寸
-        const srcPage = await srcDoc.getPage(0);
+        const srcPage = srcDoc.getPage(0);
         const { width, height } = srcPage.getSize();
 
         // 创建新的PDF文档（只有一个文件）
         const newDoc = await PDFDocument.create();
 
+        // 一次性复制所有需要的页面，避免重复复制资源
+        const segmentCount = state.segments.length;
+        const pageIndices = new Array(segmentCount).fill(0); // 都是第0页
+        const copiedPages = await newDoc.copyPages(srcDoc, pageIndices);
+
         // 把每个分割段作为新的一页添加
-        for (const segment of state.segments) {
+        for (let i = 0; i < state.segments.length; i++) {
+            const segment = state.segments[i];
+            const copiedPage = copiedPages[i];
+
             // 计算裁剪区域 (PDF坐标系从底部开始)
             const cropTop = height * (1 - segment.startRatio);
             const cropBottom = height * (1 - segment.endRatio);
             const cropHeight = cropTop - cropBottom;
-
-            // 复制页面
-            const [copiedPage] = await newDoc.copyPages(srcDoc, [0]);
 
             // 设置裁剪框
             copiedPage.setMediaBox(0, cropBottom, width, cropHeight);
