@@ -5,6 +5,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs
 const state = {
     pdfDoc: null,
     pdfBytes: null,
+    originalFileName: '',  // 原始文件名
     pageWidth: 0,      // PDF原始宽度
     pageHeight: 0,     // PDF原始高度
     canvasHeight: 0,   // Canvas渲染高度
@@ -128,6 +129,9 @@ async function loadPDF(file) {
     try {
         const arrayBuffer = await file.arrayBuffer();
         state.pdfBytes = new Uint8Array(arrayBuffer);
+
+        // 保存原始文件名（去掉 .pdf 扩展名）
+        state.originalFileName = file.name.replace(/\.pdf$/i, '');
 
         // 使用 PDF.js 加载
         state.pdfDoc = await pdfjsLib.getDocument({ data: state.pdfBytes.slice() }).promise;
@@ -439,7 +443,8 @@ async function splitAndDownload() {
 
         // 保存并下载（一个文件）
         const pdfBytes = await newDoc.save();
-        downloadPDF(pdfBytes, 'split-output.pdf');
+        const outputFileName = `${state.originalFileName}-split.pdf`;
+        downloadPDF(pdfBytes, outputFileName);
 
         elements.splitBtn.innerHTML = originalText;
         elements.splitBtn.disabled = false;
