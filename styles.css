@@ -1,0 +1,525 @@
+:root {
+    /* Swiss Palette */
+    --bg-body: #F5F5F7;
+    --bg-surface: #FFFFFF;
+    --text-primary: #1D1D1F;
+    --text-secondary: #86868B;
+    --text-tertiary: #A1A1A6;
+    
+    --accent-primary: #2C3E50; /* Dark Slate */
+    --accent-primary-hover: #1a252f;
+    --accent-secondary: #EBEBF0;
+    --accent-secondary-hover: #D2D2D7;
+    
+    --danger: #FF3B30;
+    --success: #34C759;
+    --warning: #FF9500;
+
+    /* Spacing & Layout */
+    --spacing-unit: 8px;
+    --container-width: 1200px;
+    --header-height: 80px;
+    
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+
+    /* Effects */
+    --shadow-sm: 0 4px 12px rgba(0,0,0,0.03);
+    --shadow-md: 0 12px 24px rgba(0,0,0,0.06);
+    --shadow-lg: 0 32px 64px rgba(0,0,0,0.08);
+    --transition-fast: 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-primary);
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
+}
+
+/* Header */
+.main-header {
+    height: var(--header-height);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-top: 40px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    color: var(--accent-primary);
+}
+
+.logo i {
+    font-size: 32px;
+}
+
+.logo h1 {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+/* Upload Section */
+.upload-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.upload-card {
+    background: var(--bg-surface);
+    width: 100%;
+    max-width: 600px;
+    padding: 80px 40px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    border: 2px dashed #E5E5EA;
+    cursor: pointer;
+    transition: all var(--transition-smooth);
+}
+
+.upload-card:hover, .upload-card.dragover {
+    border-color: var(--accent-primary);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+}
+
+.icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background: var(--bg-body);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    color: var(--accent-primary);
+    font-size: 32px;
+    transition: var(--transition-fast);
+}
+
+.upload-card:hover .icon-wrapper {
+    background: var(--accent-primary);
+    color: white;
+}
+
+.upload-card h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.upload-card p {
+    color: var(--text-secondary);
+    font-size: 16px;
+}
+
+/* Workspace */
+.workspace {
+    animation: slideUp 0.6s ease-out;
+    padding-bottom: 60px;
+}
+
+/* Toolbar */
+.toolbar {
+    background: var(--bg-surface);
+    padding: 16px 24px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.toolbar-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-right: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.toolbar-divider {
+    height: 24px;
+    width: 1px;
+    background: var(--bg-body);
+    margin: 0 16px;
+}
+
+/* Buttons */
+.btn {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 20px;
+}
+
+.btn-icon:hover {
+    background: var(--bg-body);
+    color: var(--text-primary);
+}
+
+.btn-primary {
+    background: var(--accent-primary);
+    color: white;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: var(--accent-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.2);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    background: var(--accent-secondary);
+    color: var(--text-primary);
+    border-radius: var(--radius-md);
+}
+
+.btn-secondary:hover {
+    background: var(--accent-secondary-hover);
+}
+
+.btn-sm {
+    padding: 10px 20px;
+    font-size: 14px;
+}
+
+.btn-lg {
+    padding: 16px 32px;
+    font-size: 16px;
+    width: 100%;
+}
+
+/* Editor Layout */
+.editor-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 32px;
+    align-items: start;
+}
+
+/* Panels */
+.preview-panel, .segments-panel {
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.panel-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--bg-body);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hint {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    background: var(--bg-body);
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.badge {
+    background: var(--bg-body);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* PDF Preview */
+.pdf-preview-wrapper {
+    position: relative;
+    background: #E5E5EA; /* Darker backdrop for canvas contrast */
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    min-height: 600px;
+}
+
+#pdfCanvas {
+    box-shadow: var(--shadow-md);
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Split Lines */
+.split-lines-container {
+    position: absolute;
+    top: 40px; /* Match padding */
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.split-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--danger);
+    pointer-events: auto;
+    cursor: ns-resize;
+    z-index: 10;
+}
+
+.split-line::after {
+    content: ''; /* Hit area */
+    position: absolute;
+    top: -10px;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+}
+
+.line-handle {
+    position: absolute;
+    left: -60px; /* Offset to left outside canvas */
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--danger);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: default;
+    box-shadow: 0 2px 8px rgba(255, 59, 48, 0.3);
+    transition: transform 0.2s;
+}
+
+.delete-line {
+    position: absolute;
+    right: -40px; /* Offset to right */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    background: white;
+    border-radius: 50%;
+    color: var(--danger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+    opacity: 0;
+}
+
+.split-line:hover .delete-line, .split-line:hover .line-handle {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Segment List */
+.segments-list {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.segment-card {
+    background: var(--bg-body);
+    padding: 16px;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    border: 1px solid transparent;
+}
+
+.segment-card:hover {
+    background: white;
+    border-color: var(--accent-secondary);
+    box-shadow: var(--shadow-sm);
+}
+
+.segment-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.segment-name-input {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    width: 100%;
+    font-family: inherit;
+}
+
+.segment-name-input:focus {
+    outline: none;
+    background: rgba(255,255,255,0.5);
+}
+
+.segment-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* Segment Highlights on Canvas */
+.segment-highlight {
+    position: absolute;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+    opacity: 0; /* Default hidden, show on hover? Or keep visible? Let's keep transparent mostly */
+}
+
+.segment-highlight:hover {
+    opacity: 1;
+}
+
+.segment-label {
+    background: rgba(29, 29, 31, 0.8);
+    backdrop-filter: blur(8px);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Action Footer */
+.action-footer {
+    padding: 24px;
+    border-top: 1px solid var(--bg-body);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+    .editor-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .segments-panel {
+        order: -1; /* Move segments above preview on tablet? Or Keep below. Let's keep below. */
+        order: 1;
+    }
+
+    .toolbar {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+    
+    .toolbar-divider {
+        display: none;
+    }
+    
+    .toolbar-group {
+        justify-content: center;
+    }
+}

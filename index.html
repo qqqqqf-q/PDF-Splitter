@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF 垂直分割工具</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-background"></div>
+    <div class="container">
+        <header class="main-header">
+            <div class="logo">
+                <i class="ph ph-scissors"></i>
+                <h1>PDF 垂直分割工具</h1>
+            </div>
+            <p class="subtitle">专业级 PDF 分割工具 - 极简 · 高效</p>
+        </header>
+
+        <!-- 上传区域 -->
+        <main class="upload-section" id="uploadSection">
+            <div class="upload-card" id="uploadBox">
+                <input type="file" id="fileInput" accept=".pdf" hidden>
+                <div class="icon-wrapper">
+                    <i class="ph ph-file-pdf"></i>
+                </div>
+                <h2>拖拽 PDF 文件到这里</h2>
+                <p>或点击选择文件</p>
+            </div>
+        </main>
+
+        <!-- 主工作区 -->
+        <main class="workspace" id="workspace" style="display: none;">
+            <!-- 工具栏 -->
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <span class="toolbar-label">快速分割：</span>
+                    <button class="btn btn-icon" data-parts="2" title="平均分为2份">
+                        <i class="ph ph-number-two"></i>
+                    </button>
+                    <button class="btn btn-icon" data-parts="3" title="平均分为3份">
+                        <i class="ph ph-number-three"></i>
+                    </button>
+                    <button class="btn btn-icon" data-parts="4" title="平均分为4份">
+                        <i class="ph ph-number-four"></i>
+                    </button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <button class="btn btn-primary btn-sm" id="addLineBtn">
+                    <i class="ph ph-plus"></i>
+                    <span>添加分割线</span>
+                </button>
+            </div>
+
+            <div class="editor-layout">
+                <!-- 左侧：PDF预览 -->
+                <div class="preview-panel">
+                    <div class="panel-header">
+                        <h3><i class="ph ph-eye"></i> 预览</h3>
+                        <span class="hint">拖动红线调整分割位置</span>
+                    </div>
+                    <div class="pdf-preview-wrapper" id="pdfPreviewWrapper">
+                        <canvas id="pdfCanvas"></canvas>
+                        <div class="split-lines-container" id="splitLinesContainer"></div>
+                    </div>
+                </div>
+
+                <!-- 右侧：分割段列表 -->
+                <div class="segments-panel">
+                    <div class="panel-header">
+                        <h3><i class="ph ph-list-dashes"></i> 分割段 <span id="segmentCount" class="badge">0</span></h3>
+                    </div>
+
+                    <div class="segments-list" id="segmentsList">
+                        <!-- Segments will be injected here -->
+                    </div>
+
+                    <div class="action-footer">
+                        <button class="btn btn-secondary" id="resetBtn">
+                            <i class="ph ph-arrow-counter-clockwise"></i> 重置
+                        </button>
+                        <button class="btn btn-primary btn-lg" id="splitBtn">
+                            <i class="ph ph-download-simple"></i> 分割并下载
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
